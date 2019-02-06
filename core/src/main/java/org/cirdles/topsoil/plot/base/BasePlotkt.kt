@@ -63,54 +63,52 @@ class BasePlotkt(dataIn: List<Map<String, Any>>, propsIn: Map<String, Any>): Abs
             translateY { d, _ -> yScale(d[1]) }
         }
 
-        val uncertainty = properties.get("uncertainty")
-
 
         val hLine = lineSegment<List<Double>> {
-            startX { d, _ -> xScale(d[0] - (uncertainty * d[2])) }
+            startX { d, _ -> xScale(d[0] - (properties.get("uncertainty") as Float * d[2])) }
             startY { d, _ -> yScale(d[1]) }
-            endX {d, _ -> xScale( d[0] + (uncertainty * d[2])) }
+            endX {d, _ -> xScale( d[0] + (properties.get("uncertainty") as Float * d[2])) }
             endY {d, _ -> yScale( d[1] ) }
             stroke(Color.BLACK)
         }
 
         val vLine = lineSegment<List<Double>> {
             startX { d, _ -> xScale(d[0]) }
-            startY { d, _ -> yScale(d[1] - (uncertainty * d[3])) }
+            startY { d, _ -> yScale(d[1] - (properties.get("uncertainty") as Float * d[3])) }
             endX {d, _ -> xScale( d[0]) }
-            endY {d, _ -> yScale( d[1] + (uncertainty * d[3]) ) }
+            endY {d, _ -> yScale( d[1] + (properties.get("uncertainty") as Float * d[3]) ) }
             stroke(Color.BLACK)
         }
 
         val topCap = lineSegment<List<Double>>{
-            startX { d, _ -> xScale(d[0] - 0.2 * (uncertainty * d[2])) }
-            startY { d, _ -> yScale(d[1] + (uncertainty * d[3])) }
-            endX {d, _ -> xScale( d[0] + 0.2 * (uncertainty * d[2])) }
-            endY {d, _ -> yScale( d[1] + (uncertainty * d[3]) ) }
+            startX { d, _ -> xScale(d[0] - 0.2 * (properties.get("uncertainty") as Float * d[2])) }
+            startY { d, _ -> yScale(d[1] + (properties.get("uncertainty") as Float * d[3])) }
+            endX {d, _ -> xScale( d[0] + 0.2 * (properties.get("uncertainty") as Float * d[2])) }
+            endY {d, _ -> yScale( d[1] + (properties.get("uncertainty") as Float * d[3]) ) }
             stroke(Color.BLACK)
         }
 
         val leftCap = lineSegment<List<Double>>{
-            startX { d, _ -> xScale(d[0] - (uncertainty * d[2])) }
-            startY { d, _ -> yScale(d[1] - 0.2 * (uncertainty * d[3])) }
-            endX {d, _ -> xScale( d[0] - (uncertainty * d[2])) }
-            endY {d, _ -> yScale( d[1] + 0.2 * (uncertainty * d[3]) ) }
+            startX { d, _ -> xScale(d[0] - (properties.get("uncertainty") as Float * d[2])) }
+            startY { d, _ -> yScale(d[1] - 0.2 * (properties.get("uncertainty") as Float * d[3])) }
+            endX {d, _ -> xScale( d[0] - (properties.get("uncertainty") as Float * d[2])) }
+            endY {d, _ -> yScale( d[1] + 0.2 * (properties.get("uncertainty") as Float * d[3]) ) }
             stroke(Color.BLACK)
         }
 
         val bottomCap = lineSegment<List<Double>>{
-            startX { d, _ -> xScale(d[0] - 0.2 * (uncertainty * d[2])) }
-            startY { d, _ -> yScale(d[1] - (uncertainty * d[3])) }
-            endX {d, _ -> xScale( d[0] + 0.2 * (uncertainty * d[2])) }
-            endY {d, _ -> yScale( d[1] - (uncertainty * d[3]) ) }
+            startX { d, _ -> xScale(d[0] - 0.2 * (properties.get("uncertainty") as Float * d[2])) }
+            startY { d, _ -> yScale(d[1] - (properties.get("uncertainty") as Float * d[3])) }
+            endX {d, _ -> xScale( d[0] + 0.2 * (properties.get("uncertainty") as Float * d[2])) }
+            endY {d, _ -> yScale( d[1] - (properties.get("uncertainty") as Float * d[3]) ) }
             stroke(Color.BLACK)
         }
 
         val rightCap = lineSegment<List<Double>>{
-            startX { d, _ -> xScale(d[0] + (uncertainty * d[2])) }
-            startY { d, _ -> yScale(d[1] - 0.2 * (uncertainty * d[3])) }
-            endX {d, _ -> xScale( d[0] + (uncertainty * d[2])) }
-            endY {d, _ -> yScale( d[1] + 0.2 * (uncertainty * d[3]) ) }
+            startX { d, _ -> xScale(d[0] + (properties.get("uncertainty") as Float * d[2])) }
+            startY { d, _ -> yScale(d[1] - 0.2 * (properties.get("uncertainty") as Float * d[3])) }
+            endX {d, _ -> xScale( d[0] + (properties.get("uncertainty") as Float * d[2])) }
+            endY {d, _ -> yScale( d[1] + 0.2 * (properties.get("uncertainty") as Float * d[3]) ) }
             stroke(Color.BLACK)
         }
 
@@ -122,7 +120,7 @@ class BasePlotkt(dataIn: List<Map<String, Any>>, propsIn: Map<String, Any>): Abs
                 .enter()
                 .append { d, _, _ -> newCircle(d) }
 
-        if(showCrosses) {
+        if(properties.get("showCrosses") as Boolean) {
 
             root.selectAll<List<Double>>(".HLine")
                     .data(reformedData)
