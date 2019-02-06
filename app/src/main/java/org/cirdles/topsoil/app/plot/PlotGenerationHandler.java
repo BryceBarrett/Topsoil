@@ -12,11 +12,10 @@ import org.cirdles.topsoil.app.plot.panel.PlotPropertiesPanel;
 import org.cirdles.topsoil.app.tab.TopsoilDataView;
 import org.cirdles.topsoil.app.tab.TopsoilTab;
 import org.cirdles.topsoil.app.tab.TopsoilTabPane;
-import org.cirdles.topsoil.plot.DefaultProperties;
-import org.cirdles.topsoil.plot.Plot;
-import org.cirdles.topsoil.plot.PlotProperty;
-import org.cirdles.topsoil.plot.TopsoilPlotType;
+import org.cirdles.topsoil.plot.*;
+import org.cirdles.topsoil.plot.base.BasePlotkt;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
@@ -65,7 +64,7 @@ public class PlotGenerationHandler {
 
         List<Map<String, Object>> data = dataView.getData().getPlotEntries();
 
-        Plot plot = plotType.getPlot();
+        /*Plot plot = plotType.getPlot();
 	    plot.setData(data);
 	    // reload data on column insertion/deletion
 	    dataView.getData().getColumns().addListener((ListChangeListener<ObservableDataColumn>) c -> {
@@ -113,6 +112,24 @@ public class PlotGenerationHandler {
         plotStage.show();
 
         // Store plot information in TopsoilDataTable
-        dataView.getData().addPlot(plotType, plotView);
+        dataView.getData().addPlot(plotType, plotView);*/
+
+        //Begin Kotlin
+
+        Map<String, Object> test1 = Collections.emptyMap();
+        test1.put("uncertainty", 2.0);
+        test1.put("showCrosses", true);
+
+
+
+        AbstractPlotkt ktPlot = new BasePlotkt(data, test1);
+        ktPlot.createGraph();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(ktPlot, 800, 600));
+        stage.setTitle("Graph Test");
+        stage.show();
+
+
+
     }
 }
