@@ -1,13 +1,17 @@
 package org.cirdles.topsoil.plot
 
 import javafx.geometry.Insets
+import javafx.scene.Group
 import javafx.scene.Node
 import javafx.scene.control.ScrollPane
 import kubed.scale.LinearScale
 import kubed.scale.scaleLinear
+import kubed.shape.area
 
 abstract class AbstractPlotkt(): ScrollPane() {
 
+
+    protected val margin = Insets(110.0, 75.0, 75.0, 75.0)
     protected var data: List<Map<String, Any>>
     protected var properties: Map<String, Any>
 
@@ -17,6 +21,12 @@ abstract class AbstractPlotkt(): ScrollPane() {
     protected var rScale : LinearScale<Double>
 
     protected var padding = 20.0
+    protected var outerWidth = 600.0
+    protected var outerHeight = 400.0
+    protected val innerWidth = outerWidth - margin.left - margin.right
+    protected val innerHeight = outerHeight - margin.top - margin.bottom
+
+    protected val root = Group()
 
 
     //private val width = 600.0
@@ -27,8 +37,10 @@ abstract class AbstractPlotkt(): ScrollPane() {
         properties = emptyMap()
 
 
-        this.setMaxSize(width + (2 * padding), height + (2 * padding))
-        this.setPadding(Insets(padding))
+        //this.setMaxSize(width + (2 * padding), height + (2 * padding))
+        //this.setPadding(Insets(padding))
+        //root.translateX = padding
+        //root.translateY = padding
 
         //Setting dummy variables for the scales
 
@@ -46,6 +58,17 @@ abstract class AbstractPlotkt(): ScrollPane() {
             domain(0.0, 1.0)
             range(0.0, 1.0)
         }
+
+        //Initialize the graphing area
+        root.prefWidth(outerWidth)
+        root.prefHeight(outerHeight)
+        root.translateX = margin.left + 30.0
+        root.translateY = margin.top
+
+        val plotArea = area<Unit> {
+            x0 { _, margin.left, _ -> }
+        }
+
     }
 
     /**

@@ -16,6 +16,7 @@ import org.cirdles.topsoil.plot.*;
 import org.cirdles.topsoil.plot.base.BasePlotkt;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
@@ -116,16 +117,16 @@ public class PlotGenerationHandler {
 
         //Begin Kotlin
 
-        Map<String, Object> test1 = Collections.emptyMap();
+        Map<String, Object> test1 = new HashMap<String, Object>();
         test1.put("uncertainty", 2.0);
-        test1.put("showCrosses", true);
+        test1.put("showCrosses", false);
 
 
 
         AbstractPlotkt ktPlot = new BasePlotkt(data, test1);
         ktPlot.createGraph();
         Stage stage = new Stage();
-        stage.setScene(new Scene(ktPlot, 800, 600));
+        stage.setScene(new Scene(ktPlot, 750, 550));
         stage.setTitle("Graph Test");
         stage.show();
 
