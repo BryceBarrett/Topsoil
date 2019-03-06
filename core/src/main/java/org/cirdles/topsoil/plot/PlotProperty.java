@@ -28,6 +28,7 @@ public enum PlotProperty {
 	UNCTBARS_OPACITY("Unct Bars Opacity"),
 
 	WETHERILL_LINE("Wetherill Line"),
+	WETHERILL_ENVELOPE("Wetherill Envelope"),
 	WETHERILL_LINE_FILL("Wetherill Line Fill"),
 	WETHERILL_ENVELOPE_FILL("Wetherill Envelope Fill"),
 	WASSERBURG_LINE("Wasserburg Line"),

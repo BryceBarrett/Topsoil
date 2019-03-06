@@ -33,6 +33,7 @@ public class PlotFeaturesController extends AnchorPane {
 
     @FXML private VBox wetherillControls;
     @FXML CheckBox wetherillCheckBox;
+    @FXML CheckBox wetherillEnvelopeCheckBox;
     @FXML ColorPicker wetherillLineFillColorPicker;
     @FXML ColorPicker wetherillEnvelopeFillColorPicker;
 
