@@ -1,4 +1,4 @@
-package org.cirdles.topsoil.plot.base
+package org.cirdles.topsoil.plot.impl
 
 import javafx.scene.Group
 import javafx.scene.paint.Color
@@ -7,13 +7,15 @@ import kubed.axis.axisLeft
 import kubed.scale.scaleLinear
 import kubed.selection.selectAll
 import kubed.selection.selection
-import kubed.shape.area
 import kubed.shape.circle
-import kubed.shape.line
 import kubed.shape.lineSegment
 import org.cirdles.topsoil.plot.AbstractPlotkt
+import org.cirdles.topsoil.plot.PlotProperty
+import org.cirdles.topsoil.plot.PlotProperty.*
+import org.cirdles.topsoil.variable.Variable
+import org.cirdles.topsoil.variable.Variables.*
 
-class BasePlotkt(dataIn: List<Map<String, Any>>, propsIn: Map<String, Any>): AbstractPlotkt(){
+class BasePlotkt(dataIn: List<Map<Variable<*>, Any?>>, propsIn: Map<PlotProperty, Any?>): AbstractPlotkt(){
 
 
     init {
@@ -27,23 +29,23 @@ class BasePlotkt(dataIn: List<Map<String, Any>>, propsIn: Map<String, Any>): Abs
         //height = 400.0
 
 
-
         xScale = scaleLinear {
-            domain(listOf(data.map {it.get("x").toString().toDouble()}.min() as Double,
-                    data.map {it.get("x").toString().toDouble()}.max() as Double))
+            domain(listOf(data.map {it[X].toString().toDouble()}.min() as Double,
+                    data.map {it[X].toString().toDouble()}.max() as Double))
             range(listOf(padding, outerWidth - padding * 2))
         }
         yScale = scaleLinear {
-            domain(listOf(data.map {it.get("y").toString().toDouble()}.min() as Double,
-                    data.map {it.get("y").toString().toDouble()}.max() as Double))
+            domain(listOf(data.map {it[Y].toString().toDouble()}.min() as Double,
+                    data.map {it[Y].toString().toDouble()}.max() as Double))
             range(listOf(outerHeight - padding, padding))
         }
         rScale = scaleLinear {
-            domain(listOf(data.map {it.get("y").toString().toDouble()}.min() as Double,
-                    data.map {it.get("y").toString().toDouble()}.max() as Double))
+            domain(listOf(data.map {it[Y].toString().toDouble()}.min() as Double,
+                    data.map {it[Y].toString().toDouble()}.max() as Double))
             range(listOf(2.0, 5.0))
         }
 
+        val unct = properties[UNCERTAINTY] as Double
 
         val newCircle = circle<List<Double>> {
             radius { _, _ -> 2.0 }      // "d" is the data that was passed
@@ -53,50 +55,50 @@ class BasePlotkt(dataIn: List<Map<String, Any>>, propsIn: Map<String, Any>): Abs
 
 
         val hLine = lineSegment<List<Double>> {
-            startX { d, _ -> xScale(d[0] - (properties.get("uncertainty") as Double * d[2])) }
+            startX { d, _ -> xScale(d[0] - (unct * d[2])) }
             startY { d, _ -> yScale(d[1]) }
-            endX {d, _ -> xScale( d[0] + (properties.get("uncertainty") as Double * d[2])) }
+            endX {d, _ -> xScale( d[0] + (unct * d[2])) }
             endY {d, _ -> yScale( d[1] ) }
             stroke(Color.BLACK)
         }
 
         val vLine = lineSegment<List<Double>> {
             startX { d, _ -> xScale(d[0]) }
-            startY { d, _ -> yScale(d[1] - (properties.get("uncertainty") as Double * d[3])) }
+            startY { d, _ -> yScale(d[1] - (unct * d[3])) }
             endX {d, _ -> xScale( d[0]) }
-            endY {d, _ -> yScale( d[1] + (properties.get("uncertainty") as Double * d[3]) ) }
+            endY {d, _ -> yScale( d[1] + (unct * d[3]) ) }
             stroke(Color.BLACK)
         }
 
         val topCap = lineSegment<List<Double>>{
-            startX { d, _ -> xScale(d[0] - 0.2 * (properties.get("uncertainty") as Double * d[2])) }
-            startY { d, _ -> yScale(d[1] + (properties.get("uncertainty") as Double * d[3])) }
-            endX {d, _ -> xScale( d[0] + 0.2 * (properties.get("uncertainty") as Double * d[2])) }
-            endY {d, _ -> yScale( d[1] + (properties.get("uncertainty") as Double * d[3]) ) }
+            startX { d, _ -> xScale(d[0] - 0.2 * (unct * d[2])) }
+            startY { d, _ -> yScale(d[1] + (unct * d[3])) }
+            endX {d, _ -> xScale( d[0] + 0.2 * (unct * d[2])) }
+            endY {d, _ -> yScale( d[1] + (unct * d[3]) ) }
             stroke(Color.BLACK)
         }
 
         val leftCap = lineSegment<List<Double>>{
-            startX { d, _ -> xScale(d[0] - (properties.get("uncertainty") as Double * d[2])) }
-            startY { d, _ -> yScale(d[1] - 0.2 * (properties.get("uncertainty") as Double * d[3])) }
-            endX {d, _ -> xScale( d[0] - (properties.get("uncertainty") as Double * d[2])) }
-            endY {d, _ -> yScale( d[1] + 0.2 * (properties.get("uncertainty") as Double * d[3]) ) }
+            startX { d, _ -> xScale(d[0] - (unct * d[2])) }
+            startY { d, _ -> yScale(d[1] - 0.2 * (unct * d[3])) }
+            endX {d, _ -> xScale( d[0] - (unct * d[2])) }
+            endY {d, _ -> yScale( d[1] + 0.2 * (unct * d[3]) ) }
             stroke(Color.BLACK)
         }
 
         val bottomCap = lineSegment<List<Double>>{
-            startX { d, _ -> xScale(d[0] - 0.2 * (properties.get("uncertainty") as Double * d[2])) }
-            startY { d, _ -> yScale(d[1] - (properties.get("uncertainty") as Double * d[3])) }
-            endX {d, _ -> xScale( d[0] + 0.2 * (properties.get("uncertainty") as Double * d[2])) }
-            endY {d, _ -> yScale( d[1] - (properties.get("uncertainty") as Double * d[3]) ) }
+            startX { d, _ -> xScale(d[0] - 0.2 * (unct * d[2])) }
+            startY { d, _ -> yScale(d[1] - (unct * d[3])) }
+            endX {d, _ -> xScale( d[0] + 0.2 * (unct * d[2])) }
+            endY {d, _ -> yScale( d[1] - (unct * d[3]) ) }
             stroke(Color.BLACK)
         }
 
         val rightCap = lineSegment<List<Double>>{
-            startX { d, _ -> xScale(d[0] + (properties.get("uncertainty") as Double * d[2])) }
-            startY { d, _ -> yScale(d[1] - 0.2 * (properties.get("uncertainty") as Double * d[3])) }
-            endX {d, _ -> xScale( d[0] + (properties.get("uncertainty") as Double * d[2])) }
-            endY {d, _ -> yScale( d[1] + 0.2 * (properties.get("uncertainty") as Double * d[3]) ) }
+            startX { d, _ -> xScale(d[0] + (unct * d[2])) }
+            startY { d, _ -> yScale(d[1] - 0.2 * (unct * d[3])) }
+            endX {d, _ -> xScale( d[0] + (unct * d[2])) }
+            endY {d, _ -> yScale( d[1] + 0.2 * (unct * d[3]) ) }
             stroke(Color.BLACK)
         }
 
@@ -107,7 +109,7 @@ class BasePlotkt(dataIn: List<Map<String, Any>>, propsIn: Map<String, Any>): Abs
                 .enter()
                 .append { d, _, _ -> newCircle(d) }
 
-        if(properties.get("showCrosses") as Boolean) {
+        if(properties[UNCTBARS] as Boolean) {
 
             root.selectAll<List<Double>>(".HLine")
                     .data(reformedData)
@@ -167,13 +169,13 @@ class BasePlotkt(dataIn: List<Map<String, Any>>, propsIn: Map<String, Any>): Abs
         var reformedData = mutableListOf<List<Double>>()
 
         data.forEach {
-            var x = it.get("x").toString().toDouble()
-            var y = it.get("y").toString().toDouble()
-            var sigma_x = it.get("sigma_x").toString().toDouble()
-            var sigma_y = it.get("sigma_y").toString().toDouble()
-            var rho = it.get("rho").toString().toDouble()
+            var x = it[X].toString().toDouble()
+            var y = it[Y].toString().toDouble()
+            var sigmaX = it[SIGMA_X].toString().toDouble()
+            var sigmaY = it[SIGMA_Y].toString().toDouble()
+            var rho = it[RHO].toString().toDouble()
 
-            reformedData.add(listOf(x, y, sigma_x, sigma_y, rho))
+            reformedData.add(listOf(x, y, sigmaX, sigmaY, rho))
         }
 
         return reformedData

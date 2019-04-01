@@ -7,13 +7,14 @@ import javafx.scene.control.ScrollPane
 import kubed.scale.LinearScale
 import kubed.scale.scaleLinear
 import kubed.shape.area
+import org.cirdles.topsoil.variable.Variable
 
 abstract class AbstractPlotkt(): ScrollPane() {
 
 
     protected val margin = Insets(110.0, 75.0, 75.0, 75.0)
-    protected var data: List<Map<String, Any>>
-    protected var properties: Map<String, Any>
+    protected var data: List<Map<Variable<*>, Any?>> = emptyList()
+    protected var properties: Map<PlotProperty, Any?> = mutableMapOf()
 
 
     protected var xScale : LinearScale<Double>
@@ -33,9 +34,6 @@ abstract class AbstractPlotkt(): ScrollPane() {
     //private val height = 300.0
 
     init {
-        data = emptyList()
-        properties = emptyMap()
-
 
         //this.setMaxSize(width + (2 * padding), height + (2 * padding))
         //this.setPadding(Insets(padding))
@@ -65,9 +63,9 @@ abstract class AbstractPlotkt(): ScrollPane() {
         root.translateX = margin.left + 30.0
         root.translateY = margin.top
 
-        val plotArea = area<Unit> {
-            x0 { _, margin.left, _ -> }
-        }
+//        val plotArea = area<Unit> {
+//            x0 { _, margin.left, _ -> }
+//        }
 
     }
 

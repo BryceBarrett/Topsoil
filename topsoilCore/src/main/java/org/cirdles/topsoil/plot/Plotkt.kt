@@ -1,5 +1,7 @@
 package org.cirdles.topsoil.plot
 
+import org.cirdles.topsoil.variable.Variable
+
 interface Plotkt: Displayable{
 
     /**
@@ -8,6 +10,6 @@ interface Plotkt: Displayable{
      *
      * @param dataIn a list of maps
      */
-    fun setData(dataIn: List<Map<String, Object>>)
+    fun setData(dataIn: List<Map<Variable<*>, Any?>>)
 
 }

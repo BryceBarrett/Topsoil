@@ -31,7 +31,7 @@ public abstract class Variables {
     //                  CONSTANTS                   //
     //**********************************************//
 
-    public static final IndependentVariable X = IndependentVariable.X;
+    public static final Variable<Number> X = IndependentVariable.X;
     public static final DependentVariable SIGMA_X = DependentVariable.SIGMA_X;
     public static final IndependentVariable Y = IndependentVariable.Y;
     public static final DependentVariable SIGMA_Y = DependentVariable.SIGMA_Y;
