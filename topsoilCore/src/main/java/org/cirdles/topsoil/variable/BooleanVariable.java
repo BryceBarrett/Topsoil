@@ -1,12 +1,5 @@
 package org.cirdles.topsoil.variable;
 
-import org.cirdles.topsoil.isotope.IsotopeSystem;
-import org.cirdles.topsoil.uncertainty.Uncertainty;
-
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-
 /**
  * A {@code Variable} for a {@code Boolean} data type.
  *

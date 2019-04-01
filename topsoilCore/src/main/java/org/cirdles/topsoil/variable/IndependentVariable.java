@@ -5,7 +5,7 @@ package org.cirdles.topsoil.variable;
  *
  * @author marottajb
  */
-public enum IndependentVariable implements Variable<Double> {
+public enum IndependentVariable implements Variable<Number> {
 
     X("x", "X"),
     Y("y", "Y"),

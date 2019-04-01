@@ -5,16 +5,16 @@ package org.cirdles.topsoil.variable;
  *
  * @author marottajb
  */
-public enum DependentVariable implements Variable<Double> {
+public enum DependentVariable implements Variable<Number> {
 
     SIGMA_X("sigma_x", "σX", IndependentVariable.X),
     SIGMA_Y("sigma_y", "σY", IndependentVariable.Y);
 
     private String name;
     private String abbr;
-    private Variable<Double> dependency;
+    private Variable<Number> dependency;
 
-    DependentVariable(String name, String abbreviation, Variable<Double> dependency) {
+    DependentVariable(String name, String abbreviation, Variable<Number> dependency) {
         this.name = name;
         this.abbr = abbreviation;
         this.dependency = dependency;
@@ -30,7 +30,7 @@ public enum DependentVariable implements Variable<Double> {
         return abbr;
     }
 
-    public Variable<Double> getDependency() {
+    public Variable<Number> getDependency() {
         return dependency;
     }
 

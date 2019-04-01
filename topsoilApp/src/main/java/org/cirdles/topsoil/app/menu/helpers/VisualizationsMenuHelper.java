@@ -1,6 +1,5 @@
 package org.cirdles.topsoil.app.menu.helpers;
 
-import com.sun.javafx.stage.StageHelper;
 import javafx.beans.binding.Bindings;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -8,7 +7,6 @@ import org.cirdles.topsoil.app.ProjectManager;
 import org.cirdles.topsoil.app.Topsoil;
 import org.cirdles.topsoil.app.control.dialog.TopsoilNotification;
 import org.cirdles.topsoil.app.control.plot.PlotStage;
-import org.cirdles.topsoil.app.data.*;
 import org.cirdles.topsoil.app.data.column.DataColumn;
 import org.cirdles.topsoil.app.data.row.DataRow;
 import org.cirdles.topsoil.app.data.row.DataSegment;
@@ -59,7 +57,7 @@ public class VisualizationsMenuHelper {
      * @return              true if successful
      */
     public static boolean generatePlot(PlotType plotType, DataTable table, Map<PlotProperty, Object> properties) {
-        List<Variable<?>> required = Arrays.asList(IndependentVariable.X, IndependentVariable.Y);
+        List<Variable<?>> required = Arrays.asList(Variables.X, Variables.Y);
         List<Variable<?>> missing = new ArrayList<>();
         for (Variable<?> v : required) {
             if (table.getVariableColumnMap().get(v) == null) {
@@ -143,11 +141,11 @@ public class VisualizationsMenuHelper {
             for (DataRow row : rows) {
                 entry = new HashMap<>();
 
-                entry.put(TextVariable.LABEL.getName(), row.getLabel());
-                entry.put(TextVariable.ALIQUOT.getName(), aliquot.getLabel());
-                entry.put(BooleanVariable.SELECTED.getName(), row.isSelected());
+                entry.put(Variables.LABEL.getName(), row.getLabel());
+                entry.put(Variables.ALIQUOT.getName(), aliquot.getLabel());
+                entry.put(Variables.SELECTED.getName(), row.isSelected());
 
-                for (Variable var : Variables.ALL) {
+                for (Variable var : Variables.NUMBER_TYPE) {
                     Object value;
                     column = varMap.get(var);
                     if (column != null) {
