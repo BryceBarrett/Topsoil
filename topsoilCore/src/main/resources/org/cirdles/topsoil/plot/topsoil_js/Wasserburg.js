@@ -37,6 +37,13 @@
                 (Math.pow(Math.exp(constants.LAMBDA_238 * t) - 1, 2) * constants.R238_235S);
         };
 
+        //derivative(with respect to x) for y given x value
+        wasserburg.y.primeResX = function (x) {
+            (1 / constants.R238_235S) * ((((constants.LAMBDA_238 * (1 + x) - constants.LAMBDA_235) *
+                Math.exp(1 + (1 / x), (constants.LAMBDA_235 / constants.LAMBDA_238))) /
+                (constants.LAMBDA_238 * (1 + x))) - 1)
+        }
+
         /** tools for uncertainty envelopes
          *
          * ****************

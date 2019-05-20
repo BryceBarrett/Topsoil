@@ -86,11 +86,38 @@ plot.updateTWConcordia = function() {
         var maxY_T = calculateDate(plot.yAxisScale.domain()[1], 0.0);
         var maxT = Math.min(maxX_T, maxY_T);
 
+        // This the value that will split the concordia line
+        var n = 5;
+        var segmentSize = (maxT - minT) / n;
+
 
         // build the concordia line
         plot.twconcordia = plot.twconcordiaGroup.select(".twconcordia")
             .attr("d", function () {
-                var approximateSegment = function (path, minT, maxT) {
+                var path = []
+                moveTo(path, wasserburg(minT).scaleBy(plot.xAxisScale, plot.yAxisScale));
+
+                var trackingSegVal = minT;
+                for (var i = 0; i < n; n++){
+
+                    var nextSegVal = trackingSegVal + segmentSize;
+
+                    var p1 = wasserburg(trackingSegVal);
+                    var p2 = wasserburg(nextSegVal);
+                    var m1 = wasserburg.y.primeResX(p1[0]);
+                    var m2 = wasserburg.y.primeResX(p2[0]);
+                    var controlPointX = ((m1 * p1[0]) - (m2 * p2[0]) - p1[1] + p2[1]) / (m1 - m2);
+                    var controlPointY = ((m1 * ((m2 * (p1[0] - p2[0])) + p2[1])) - (m2 * p1[1])) / (m1 - m2);
+                    var controls = new Vector2D(controlPointX, controlPointY);
+
+                    plot.cubicBezier(path, p1.scaleBy(plot.xAxisScale, plot.yAxisScale),
+                        controls.scaleBy(plot.xAxisScale, plot.yAxisScale),
+                        p2.scaleBy(plot.xAxisScale, plot.yAxisScale));
+
+
+
+                }
+                /*var approximateSegment = function (path, minT, maxT) {
                     var p1 = wasserburg(minT).plus(
                         wasserburg.prime(minT).times((maxT - minT) / 3))
                         .scaleBy(plot.xAxisScale, plot.yAxisScale);
@@ -116,7 +143,7 @@ plot.updateTWConcordia = function() {
                     approximateSegment(path, minT + stepSize * i, minT + stepSize * (i + 1));
                 }
 
-                return path.join("");
+                return path.join("");*/
             })
             .attr("stroke", plot.getProperty('Wasserburg Line Fill'))
             .attr("stroke-width", 2);
