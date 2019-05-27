@@ -57,6 +57,7 @@ plot.updateTWConcordia = function() {
 
         // build the concordia line
         plot.twconcordia = plot.twconcordiaGroup.select(".twconcordia")
+
             .attr("d", function () {
                 var path = []
                 moveTo(path, wasserburg(minT).scaleBy(plot.xAxisScale, plot.yAxisScale));
@@ -81,6 +82,7 @@ plot.updateTWConcordia = function() {
 
 
                 }
+                return path.join("");
                 /*var approximateSegment = function (path, minT, maxT) {
                     var p1 = wasserburg(minT).plus(
                         wasserburg.prime(minT).times((maxT - minT) / 3))
@@ -115,6 +117,49 @@ plot.updateTWConcordia = function() {
         if (plot.getProperty(Property.CONCORDIA_ENVELOPE)) {
             plot.twconcordiaGroup.select(".twuncertaintyEnvelope")
                 .attr("d", function () {
+                    var path = []
+                    moveTo(path, wasserburg(minT).scaleBy(plot.xAxisScale, plot.yAxisScale));
+
+                    var trackingSegVal = minT;
+                    for (var i = 0; i < n; n++){
+
+                        var nextSegVal = trackingSegVal + segmentSize;
+
+                        var p1 = wasserburg.upperEnvelope(trackingSegVal);
+                        var p2 = wasserburg.upperEnvelope(nextSegVal);
+                        var m1 = wasserburg.y.primeResX(p1[0]);
+                        var m2 = wasserburg.y.primeResX(p2[0]);
+                        var controlPointX = ((m1 * p1[0]) - (m2 * p2[0]) - p1[1] + p2[1]) / (m1 - m2);
+                        var controlPointY = ((m1 * ((m2 * (p1[0] - p2[0])) + p2[1])) - (m2 * p1[1])) / (m1 - m2);
+                        var controls = new Vector2D(controlPointX, controlPointY);
+
+                        plot.cubicBezier(path, p1.scaleBy(plot.xAxisScale, plot.yAxisScale),
+                            controls.scaleBy(plot.xAxisScale, plot.yAxisScale),
+                            p2.scaleBy(plot.xAxisScale, plot.yAxisScale));
+                    }
+
+                    moveTo(path, wasserburg(minT).scaleBy(plot.xAxisScale, plot.yAxisScale));
+
+                    var trackingSegVal = minT;
+                    for (var i = 0; i < n; n++){
+
+                        var nextSegVal = trackingSegVal + segmentSize;
+
+                        var p1 = wasserburg.lowerEnvelope(trackingSegVal);
+                        var p2 = wasserburg.lowerEnvelope(nextSegVal);
+                        var m1 = wasserburg.y.primeResX(p1[0]);
+                        var m2 = wasserburg.y.primeResX(p2[0]);
+                        var controlPointX = ((m1 * p1[0]) - (m2 * p2[0]) - p1[1] + p2[1]) / (m1 - m2);
+                        var controlPointY = ((m1 * ((m2 * (p1[0] - p2[0])) + p2[1])) - (m2 * p1[1])) / (m1 - m2);
+                        var controls = new Vector2D(controlPointX, controlPointY);
+
+                        plot.cubicBezier(path, p1.scaleBy(plot.xAxisScale, plot.yAxisScale),
+                            controls.scaleBy(plot.xAxisScale, plot.yAxisScale),
+                            p2.scaleBy(plot.xAxisScale, plot.yAxisScale));
+
+                    }
+
+                /*.attr("d", function () {
                     var approximateUpperSegment = function (path, minT, maxT) {
                         var p1 = wasserburg.upperEnvelope(minT).plus(
                             wasserburg.prime(minT).times((maxT - minT) / 3))
@@ -185,7 +230,7 @@ plot.updateTWConcordia = function() {
                     lineTo(path, [plot.xAxisScale.range()[0], plot.yAxisScale.range()[0]]);
                     close(path);
 
-                    return path.join("");
+                    return path.join("");*/
                 })
                 .attr("fill", plot.getProperty(Property.CONCORDIA_ENVELOPE_FILL));
         }
