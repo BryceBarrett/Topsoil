@@ -71,6 +71,9 @@ plot.updateTWConcordia = function() {
                     var p2 = wasserburg(nextSegVal);
                     var m1 = wasserburg.y.primeResX(p1[0]);
                     var m2 = wasserburg.y.primeResX(p2[0]);
+
+                    alert(m1);
+                    alert(m2);
                     var controlPointX = ((m1 * p1[0]) - (m2 * p2[0]) - p1[1] + p2[1]) / (m1 - m2);
                     var controlPointY = ((m1 * ((m2 * (p1[0] - p2[0])) + p2[1])) - (m2 * p1[1])) / (m1 - m2);
                     var controls = new Vector2D(controlPointX, controlPointY);
@@ -78,6 +81,14 @@ plot.updateTWConcordia = function() {
                     plot.cubicBezier(path, p1.scaleBy(plot.xAxisScale, plot.yAxisScale),
                         controls.scaleBy(plot.xAxisScale, plot.yAxisScale),
                         p2.scaleBy(plot.xAxisScale, plot.yAxisScale));
+
+                    //plot.cubicBezier(path, p1, controls, p2);
+                    alert("StepVal: " + i);
+                    alert("p1X: " + p1[0] + " p1Xscale: " + p1.scaleBy(plot.xAxisScale, plot.yAxisScale)[0]);
+                    alert("controlsX: " + controls[0] + " controlsXscale: " + controls.scaleBy(plot.xAxisScale, plot.yAxisScale)[0]);
+                    alert("p2X: " + p2[0] + " p2Xscale: " + p2.scaleBy(plot.xAxisScale, plot.yAxisScale)[0]);
+
+                    trackingSegVal = nextSegVal;
 
 
 
