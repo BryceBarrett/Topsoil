@@ -63,7 +63,7 @@ plot.updateTWConcordia = function() {
                 moveTo(path, wasserburg(minT).scaleBy(plot.xAxisScale, plot.yAxisScale));
 
                 var trackingSegVal = minT;
-                for (var i = 0; i < n; n++){
+                for (var i = 0; i < n; i++){
 
                     var nextSegVal = trackingSegVal + segmentSize;
 
@@ -121,7 +121,7 @@ plot.updateTWConcordia = function() {
                     moveTo(path, wasserburg(minT).scaleBy(plot.xAxisScale, plot.yAxisScale));
 
                     var trackingSegVal = minT;
-                    for (var i = 0; i < n; n++){
+                    for (var i = 0; i < n; i++){
 
                         var nextSegVal = trackingSegVal + segmentSize;
 
@@ -141,7 +141,7 @@ plot.updateTWConcordia = function() {
                     moveTo(path, wasserburg(minT).scaleBy(plot.xAxisScale, plot.yAxisScale));
 
                     var trackingSegVal = minT;
-                    for (var i = 0; i < n; n++){
+                    for (var i = 0; i < n; i++){
 
                         var nextSegVal = trackingSegVal + segmentSize;
 
